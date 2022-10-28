@@ -1,0 +1,47 @@
+* {-webkit-box-sizing: border-box;box-sizing: border-box;}
+body,
+button,
+input,
+select,
+textarea {
+  font-family: "Microsoft Yahei", "微软雅黑", "宋体", 宋体, arial, "Hiragino Sans GB", Tahoma, Arial, Helvetica, STHeiti;font-size: 12px;
+}
+
+body,
+ul,
+ol,
+li,
+p,
+h1 {
+  margin: 0;padding: 0;
+}
+
+html,
+body {
+  margin: 0px;height: 100%;width: 100%;
+}
+
+a {
+  text-decoration: none;cursor: pointer;
+}
+
+li {
+  list-style: none
+}
+
+body {
+  background: #fff;width: 100%;-webkit-tap-highlight-color: transparent;
+}
+
+button {
+  outline: none;
+}
+
+input {
+  outline: 0;
+  -webkit-appearance: none;
+}
+
+#app .el-table th {
+  background: #f0f2f4;
+}

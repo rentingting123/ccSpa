@@ -1,0 +1,105 @@
+/*公共样式--开始*/
+* {
+  margin: 0;
+  padding: 0;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  min-height: 100%;
+  font-size: 14px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+p {
+  margin: 0;
+  padding: 0;
+}
+img {
+  border: none;
+  vertical-align: middle;
+}
+a {
+  text-decoration: none;
+  color: #232323;
+}
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+input,
+textarea {
+  outline: none;
+  border: none;
+}
+textarea {
+  resize: none;
+  overflow: auto;
+}
+.clearfix {
+  zoom: 1;
+}
+.clearfix:after {
+  content: ".";
+  width: 0;
+  height: 0;
+  visibility: hidden;
+  display: block;
+  clear: both;
+  overflow: hidden;
+}
+.fl {
+  float: left;
+}
+.fr {
+  float: right;
+}
+.tl {
+  text-align: left;
+}
+.tc {
+  text-align: center;
+}
+.tr {
+  text-align: right;
+}
+.ellipse,
+.dian {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dian2 {
+  display: -webkit-box;
+  /*作为弹性伸缩盒子模型显示*/
+  -webkit-line-clamp: 2;
+  /*显示的行数；如果要设置2行加...则设置为2*/
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* 溢出用省略号*/
+  /*! autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  /*伸缩盒子的子元素排列：从上到下*/
+}
+.inline {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+.clear {
+  clear: both;
+}

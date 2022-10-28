@@ -1,0 +1,48 @@
+<template>
+<div>
+    <newslist name="组织机构" referType='21' :lists='lists' path='true'/>
+    <div style="text-align:center;margin:10px 0;">
+        <el-pagination layout="prev, pager, next" :hide-on-single-page='true' :page-size="pageSize"  :current-page.sync="page" @current-change="getnews" :total="total"></el-pagination>
+    </div>
+    <!-- 寄语 -->
+    <message />
+</div>
+</template>
+
+<script>
+import network from '@/api'
+import message from './common/message'
+import newslist from '@/hcj/view/common/newslist'
+export default {
+    components:{
+        newslist,
+        message
+    },
+    data(){
+        return{
+            lists:[],
+            page: 1,
+            total: 0,
+            pageSize: 3,
+        }
+    },
+    created(){
+        this.page = 1;
+        this.getnews()
+    },
+     methods:{
+        async getnews(){
+            let res = await network.npgetNewsList({data:{
+                pageNum: this.page,
+                pageSize: this.pageSize,
+                type: 21,
+                groupId: localStorage.getItem('groupId')
+            }});
+            if(res=='error') return;
+            this.total = res.total;
+            this.lists = res && res.pageData || []
+        },
+    },
+    
+}
+</script>

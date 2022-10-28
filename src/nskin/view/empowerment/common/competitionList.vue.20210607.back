@@ -1,0 +1,218 @@
+<template>
+    <div class="competitionList">
+        <h1 class="titlesss">
+            榜单内竞赛(57项)
+        </h1>
+        <div class="competitionMain" @click="hideList">
+            <div>
+                <bubble
+                    v-for="item in types" 
+                    :key="item.key" 
+                    :name='item.name' 
+                    :num='item.num | getNum' 
+                    :on='type==item.key' 
+                    @click.native.stop="changeType(item)"
+                    :style="{'left': item.left+'px', 'top': item.top+'px'}"
+                />
+            </div>
+            <div class="right" id="competitionMain">
+                <p class="button" id="competitionButton" @click="hideList">
+                    <img v-if="type" src="http://web.moocollege.com/mooc/hzq/vueskin/assets/nskin/20210517/empowerment_next.png" width="19px" height="auto">
+                </p>
+                <ul id="competitionMainUl" @click.stop="">
+                    <template v-if="lists.length>0">
+                        <li v-for="list in lists" :key="list.id" @click="toDetail(list)">
+                            <p></p>
+                            <div class="dian">{{list.name}}</div>
+                        </li>
+                    </template>
+                    <template v-else>
+                        <li style="justify-content: center;">
+                            暂无数据
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+import network from '@/api'
+import bubble from './bubble'
+let _this_
+export default {
+    components:{
+        bubble
+    },
+    data(){
+        return{
+            lists:[],
+            types:[
+                {
+                    key: 1,
+                    name:'电子信息',
+                    num: 0,
+                    left: 99,
+                    top: 102,
+                },
+                {
+                    key: 2,
+                    name:'理工',
+                    num: 0,
+                    left: 423,
+                    top: 201,
+                },
+                {
+                    key: 3,
+                    name:'人文社科',
+                    num: 0,
+                    left: 670,
+                    top: 161,
+                },
+                {
+                    key: 4,
+                    name:'综合',
+                    num: 0,
+                    left: 888,
+                    top: 69,
+                },
+            ],
+            type: '',
+            img: '',
+            nums: 0,
+
+        }
+    },
+    beforeCreate(){
+        _this_ = this
+    },
+    async created(){
+        this.getData()
+    },
+    methods:{
+        // 显示各分类的值
+        async getData(){
+            let res = await network.selectRankCompetitionNum()
+            if(res=='error') return;
+            let nums = 0
+            for(let key in res){
+                for(let i in this.types){
+                    if(this.types[i].key==key){
+                        nums += res[key]
+                        this.types[i].num = res[key]
+                    }
+                }
+            }
+            this.nums = nums
+        },
+        async changeType(item){
+            this.type = item.key
+            let res = await network.selectRankCompetitions({data:{
+                type: this.type==0 ? "" : this.type
+            }})
+            if(res=='error') return;
+            this.lists = res || []
+
+            document.getElementById('competitionMainUl').style.width = '438px'
+            document.getElementById('competitionButton').style.width = '36px'
+
+        },
+        hideList(){
+            this.type = ''
+            document.getElementById('competitionMainUl').style.width = '0px'
+            document.getElementById('competitionButton').style.width = '10px'
+        },
+        toDetail(list){
+            this.$router.push('/empowerment/detail/'+list.id)
+        }
+    },
+    filters:{
+        getNum(val){
+            if(!val) return 0;
+            if(!_this_.nums) return 0;
+            return parseInt(val / _this_.nums * 100)
+        }
+    }
+}
+</script>
+
+<style lang='less' scoped>
+.competitionList{
+    width: 1172px;
+    margin: 0 auto;
+    .titlesss{
+        width: 1172px;
+        height: 64px;
+        background: #252223;
+        line-height: 64px;
+        font-size: 29px;
+        color: #FFFFFF;
+        text-indent: 52px;
+        text-align: left;
+    }
+    .competitionMain{
+        width: 1172px;
+        height: 521px;
+        overflow: hidden;
+        background: rgba(173, 185, 205, 1);
+        position: relative;
+        overflow: hidden;
+        background: url('https://web.moocollege.com/mooc/hzq/vueskin/assets/nskin/empowermentbg.png') no-repeat;
+        background-size: 100%;
+        .right{
+            position: absolute;
+            width: auto;
+            height: 100%;
+            top: 0;
+            right: 0;
+            .button{
+                float: left;
+                height: 100%;
+                background: #ED1E26;
+                cursor: pointer;
+                width: 10px;
+                overflow: hidden;
+                line-height: 521px;
+            }
+            ul{
+                float: left;
+                width: 0;
+                height: 100%;
+                background: #E6EBEB;
+                text-align: left;
+                overflow: hidden;
+                transition: 1s width;
+                li{
+                    width: 438px;
+                    height: 52px;
+                    background: #F2F7F7;
+                    line-height: 52px;
+                    font-size: 18px;
+                    color: #252223;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    cursor: pointer;
+                    p{
+                        width: 22px;
+                        height: 22px;
+                        background: #979797;
+                        border-radius: 100%;
+                        margin: 0 21px 0 42px;
+                    }
+                    div{
+                        width: 312px;
+                    }
+                    &:nth-child(2n){
+                        background: #E6EBEB;
+                    }
+                    &:hover{
+                        color: #ED1E26;
+                    }
+                }
+            }
+        }
+    }
+}
+</style>
